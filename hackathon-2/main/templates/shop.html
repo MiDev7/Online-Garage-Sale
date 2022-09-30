@@ -1,0 +1,31 @@
+{% extends 'index.html' %}
+{% load static %}
+{% block shop %}
+<div class="container-fluid">
+    <div class="Header">
+        <h1>SHOP</h1>
+    </div>
+</div>
+
+<div class="card-container">
+    {% for product in products %}
+    <div class="card">
+        <div class="card-header">
+          <img src="{{product.imageURL}}" alt="rover" />
+        </div>
+        <div class="card-body">
+            <h4>
+                {{product.name}}
+            </h4>
+            <p>
+                MUR {{product.price}}
+            </p>
+            <button class="buy_btn"  data-product="{{product.id}}" data-action="add"><i class="fa-solid fa-cart-shopping"></i><p>BUY</p> </button>  
+            </div>
+        </div>
+        {% endfor%}
+    </div>
+    
+</div>
+<script src="{% static 'js\shop.js' %}"></script>
+{% endblock %}

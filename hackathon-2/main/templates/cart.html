@@ -1,0 +1,67 @@
+{% extends "index.html"%}
+{% load static %}
+{% block cart%}
+<div class="wrap cf">
+    <h1 class="projTitle">My Cart</h1>
+    <div class="heading cf">
+      <h1>My Cart</h1>
+      <a href="../shop/" class="continue">Continue Shopping</a>
+    </div>
+    
+    <div class="cart">
+  <!--    <ul class="tableHead">
+        <li class="prodHeader">Product</li>
+        <li>Quantity</li>
+        <li>Total</li>
+         <li>Remove</li>
+      </ul>-->
+      
+      <ul class="cartWrap">
+        {% for item in items %}
+        <li class="items odd">
+          
+        <div class="infoWrap"> 
+            <div class="cartSection">
+                <img src="{{item.product.imageURL}}" alt="" class="itemImg" />
+                <p class="itemNumber">#QUE-007544-002</p>
+                <h3>{{item.product.name}}</h3>
+                <div class="quantity">
+                    <input type="text"  class="qty" placeholder="{{item.quantity}}"/> 
+                    <div>
+                      <img  data-product={{item.product.id}} data-action="add" src="{% static 'image\3+arrow-up.png' %}" alt="" class="chg-quantity">
+                      <img src="{% static 'image\2+arrow-down.png' %}" alt="" class="chg-quantity" data-product={{item.product.id}} data-action="remove">
+                    </div>
+                    
+                    <p> x MUR {{item.product.price}}</p>
+                </div>
+              
+        
+                <p class="stockStatus"> In Stock</p>
+            </div>  
+      
+          
+            <div class="prodTotal cartSection">
+                    <p>MUR {{item.get_total}}</p>
+            </div>
+            <div class="cartSection removeWrap">
+                <a href="#" class="remove">x</a>
+            </div>
+        </div>
+        </li>
+        {% endfor %}
+      </ul>
+     
+    </div>
+    <div class="subtotal cf">
+      <ul>
+        <!-- <li class="totalRow"><span class="label">Subtotal</span><span class="value">$35.00</span></li>
+  
+        <li class="totalRow"><span class="label">Tax</span><span class="value">$4.00</span></li> -->
+        <li class="totalRow final"><span class="label">Total</span><span class="value">MUR {{order.get_cart_total}} </span></li>
+        <li class="totalRow"><a href="../checkout/" class="btn continue">Checkout</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="{% static 'js\cart.js' %}"></script>
+{% endblock %}

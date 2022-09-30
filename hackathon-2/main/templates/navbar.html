@@ -1,0 +1,85 @@
+{%load static %}
+<!-- <nav class="Navbar">
+    <div class="Logo">
+        <img src="{% static 'pictures\Garage Sale-02.png' %}" alt="navbar-logo " class="ImageLogo">
+    </div>
+    <div>
+        <ul class="NavList">
+            <li class="NavItem"><a href="/">HOME</a></li>
+            <li class="NavItem shop" onclick="nav_dropdown()"><a href="../shop/">SHOP</a>
+                <ul id="Dropdown_menu">
+                    <li>Clothing</li>
+                    <li>Mechanics</li>
+                    <li>Education</li>
+                </ul>
+            </li>
+            <li class="NavItem"><a>ABOUT US</a></li>
+            <li class="NavItem"><a>CONTACT US</a></li>
+        </ul>
+    </div>
+    <div class="NavAction">
+        <span><a>LOGIN</a></span>
+        <span class="Signup-btn"><a href="../signup/">SIGN UP</a></span>
+    </div>
+    <div class="cart_btn">
+        <a href="../cart/"><i class="fa-solid fa-cart-shopping"></i></a>
+    </div>
+
+</nav> -->
+<nav class="navbar navbar-expand-lg bg-light p-0">
+    <div class="container-fluid d-flex flex-row justify-content-between">
+        <a class="navbar-brand" href="#"><img src="{% static 'pictures\Garage Sale-02.png' %}" width="125" alt="navbar-logo " class="ImageLogo"></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+                <li class="nav-item NavItem">
+                    <a class="nav-link active" aria-current="page" href="../home/">HOME</a>
+                </li>
+                <li class="nav-item NavItem">
+                    <a class="nav-link" href="../shop/">SHOP</a>
+                </li>
+                
+                <li class="nav-item NavItem">
+                    <a class="nav-link" href="#">ABOUT US</a>
+                </li>
+                <li class="nav-item NavItem">
+                    <a class="nav-link" href="#">CONTACT US</a>
+                </li>
+                <!-- <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Dropdown
+                    </a>
+                    <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="#">Action</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </li> -->
+                <!-- <li class="nav-item">
+                    <a class="nav-link disabled">Disabled</a>
+                </li> -->
+            </ul>
+            <!-- <form class="d-flex" role="search">
+            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success" type="submit">Search</button>
+            </form> -->
+            <div class="NavAction d-flex">
+                <span><a>LOGIN</a></span>
+                <span ><a href="../signup/" class="signup">SIGN UP</a></span>
+            </div>
+            
+        </div>
+        <div>
+            <a href="../cart/" class="position-relative">
+                <i class="fa-solid fa-cart-shopping cart_btn"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger w-1">
+                    {{cartItems}}
+                    <span class="visually-hidden">unread messages</span>
+                </span>
+            </a>
+        </div>
+    </div>
+</nav>
