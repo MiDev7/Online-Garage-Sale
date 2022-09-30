@@ -36,7 +36,7 @@ function Signup() {
   return (
     <React.Fragment>
         <div>
-            <Header sx={{ marginBottom: '100' }}></Header>
+            <Header ></Header>
         </div>
         <div>
             <Card sx={{ maxWidth: 750 , padding: 5, margin:'auto', position:'relative'}} >
