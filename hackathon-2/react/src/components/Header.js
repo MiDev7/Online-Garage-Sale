@@ -1,16 +1,48 @@
-import React,{useState} from 'react'
+import React,{useState , useContext} from 'react'
 import {AppBar, Typography,Toolbar, Tabs, Tab,Button,useMediaQuery,useTheme } from '@mui/material';
 import Drawer from './Drawer';
-import Signup from './Signup';
-import Login from './Login';
+import AuthContext from "./context/Authcontext";
 
 
 function Header() {
-    const [value, setValue] = useState()
+    const [value, setValue] = useState(0);
+
+
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+      };
     const DrawerTheme = useTheme();
-    const PAGES = ["Home","Shop","About us","Contact us"]
     const isMatch =  useMediaQuery(DrawerTheme.breakpoints.down("md"));
-    console.log(isMatch)
+    const { user, logoutUser } = useContext(AuthContext);
+
+
+    const items =  {
+        "1":{
+            "title":"HOME",
+            "link":"../"
+        },
+        "2":{
+            "title":"SHOP",
+            "link":"../shop"
+        },
+        "3":{
+            "title":"ABOUT US",
+            "link":"../aboutus"
+        },
+        "4":{
+            "title":"CONTACT US",
+            "link":"../contactus"
+        }
+    }
+
+    var arr =[]
+    Object.keys(items).forEach(function(key) {
+        arr.push(items[key]);
+      });
+
+
+
+
   return (
         <React.Fragment>
             
@@ -37,23 +69,35 @@ function Header() {
                                 <>
                                     <Tabs sx={{
                                     marginLeft : 'auto',
-                                    color: 'primary.dark'
+                                    color: 'primary.light'
                                     }}  
                                     value={value} 
-                                    onChange={(e,value)=> setValue(value)} 
+                                    onChange={handleChange}
                                     indicatorColor="primary">
                                         {
-                                            PAGES.map((page,index)=>(
-                                                <Tab key={index} href={page} label={page}/>
-                                            ))
+
+                                            arr.map(item =>
+                                                <Tab key={item.title} href={item.link} tabIndex={item.id} label={item.title}/>
+                                                
+                                            )
                                         }
+                                    
                                     </Tabs>
-                                    <Button href="../login" sx={{
-                                        marginLeft: "auto"
-                                    }}variant="contained">Login</Button>
-                                    <Button href="../signup" sx={{
-                                        marginLeft: "10px"
-                                    }}variant="contained">Register</Button>
+                                    {user ? (
+                                        <Button onClick={logoutUser} sx={{
+                                            marginLeft: "auto"
+                                        }}variant="contained">Logout</Button>
+                                    ):(
+                                        <>
+                                            <Button href="../login" sx={{
+                                                marginLeft: "auto"
+                                            }}variant="contained">Login</Button>
+                                            <Button href="../signup" sx={{
+                                                marginLeft: "10px"
+                                            }}variant="contained">Register</Button>
+                                        </>
+                                    )}
+                                    
                                 </>
                             )
                         }

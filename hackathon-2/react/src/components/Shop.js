@@ -42,7 +42,8 @@ class Shop extends React.Component{
     render(){
         const prodData=this.state.data;
         const cards = prodData.map((prod)=>
-            <Grid item sx={6}>
+
+            <Grid  key={prod.id} item xs={3}>
                 <Card sx={{ maxWidth: 250 }}>
                     <CardMedia
                             component="img"
@@ -67,7 +68,7 @@ class Shop extends React.Component{
         );
         return (
 
-            <Grid container spacing={2} justifyContent="center" sx={{
+            <Grid container spacing={1} justifyContent="center" sx={{
                 position:"relative"
             }}>
                 {cards}

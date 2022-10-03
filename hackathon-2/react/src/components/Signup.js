@@ -1,4 +1,5 @@
 import React from 'react'
+import {useState, useContext} from 'react';
 import Header from './Header'
 import {Typography} from '@mui/material'
 import Grid from '@mui/material/Grid';
@@ -8,22 +9,39 @@ import {Button ,InputAdornment,IconButton,InputLabel,FormControl,FilledInput} fr
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import MuiPhoneNumber from 'material-ui-phone-number';
+import AuthContext from "./context/Authcontext";
+
 
 function Signup() {
     const [values, setValues] = React.useState({
-        phone:'',
         password: '',
         confirmPassword:'',
         showPassword: false,
         showConfirmPassword: false,
       });
+    const [phone, setPhone] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [password2, setPassword2] = useState("");
+    const [firstname, setFirstname] = useState("");
+    const [lastname, setLastname] = useState("");
+    const [email, setEmail] = useState("");
+    const { registerUser } = useContext(AuthContext);
+  
+    const handleSubmit = async e => {
+      e.preventDefault();
+      registerUser(username, password, password2, lastname, firstname,email);
+    };
     
       const handleChange = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
+        setPassword(event.target.value);
+        
       };
 
       const handleChangeConfirmPassword = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
+        setPassword2(event.target.value);
       };
     
       const handleClickShowPassword = () => {
@@ -53,23 +71,22 @@ function Signup() {
   return (
     <React.Fragment>
         <div>
-            <Header ></Header>
-        </div>
-        <div>
             <Card sx={{ maxWidth: 750 , padding: 5, margin:'auto', position:'relative',marginTop:5}} >
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Typography textAlign='center' variant='h3' color="primary" fontWeight="bold" >REGISTER</Typography>
                     </Grid>
-                    
-                    <Grid item xs={12} sm={6} >
-                        <TextField label="First Name" placeholder="Enter your first name" variant="filled" fullWidth ></TextField>
+                    <Grid item xs={12}>
+                        <TextField label="Username" placeholder="Enter your username" variant="filled" onChange={e => setUsername(e.target.value)} fullWidth ></TextField>
                     </Grid>
                     <Grid item xs={12} sm={6} >
-                        <TextField label="Last Name" placeholder="Enter your last name" variant="filled" fullWidth ></TextField>
+                        <TextField label="First Name" placeholder="Enter your first name" variant="filled"  onChange={e => setFirstname(e.target.value)}  fullWidth ></TextField>
+                    </Grid>
+                    <Grid item xs={12} sm={6} >
+                        <TextField label="Last Name" placeholder="Enter your last name" variant="filled" onChange={e => setLastname(e.target.value)}  fullWidth ></TextField>
                     </Grid>
                     <Grid item xs={12} >
-                        <TextField label="Email" placeholder='Type your email' variant='filled' type='email' fullWidth></TextField>
+                        <TextField label="Email" placeholder='Type your email' variant='filled' type='email' onChange={e => setEmail(e.target.value)}  fullWidth></TextField>
                     </Grid>
                     <Grid item xs={12} >
                         <FormControl  variant="filled" fullWidth >
@@ -78,7 +95,7 @@ function Signup() {
                             id="filled-adornment-password"
                             type={values.showPassword ? 'text' : 'password'}
                             value={values.password}
-                            onChange={handleChange('password')}
+                            onChange={handleChange('password') }
                             endAdornment={
                                 <InputAdornment position="end">
                                 <IconButton
@@ -116,15 +133,16 @@ function Signup() {
                                 }
                             />
                             </FormControl>
-                    </Grid>
+                    </Grid> 
                     <Grid item xs={12} >
-                        <MuiPhoneNumber defaultCountry={'mu'} onChange={handleChange} variant='filled' label='Phone number' value={values.phone}  fullWidth/>
+                        <MuiPhoneNumber defaultCountry={'mu'} onChange={e => setPhone(e.target.value)} variant='filled' label='Phone number' value={phone}  fullWidth/>
                     </Grid>
                     <Grid item xs={12}>
-                    <   Button type='submit' variant='contained' fullWidth>Submit</Button>
+                      < Button type='submit' variant='contained' onClick={handleSubmit}  fullWidth>Submit</Button>
                     </Grid>
                     
                 </Grid>
+                
             </Card>
         </div>
         

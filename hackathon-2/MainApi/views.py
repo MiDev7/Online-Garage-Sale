@@ -31,6 +31,7 @@ def getUser(request):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+    permission_classes = (AllowAny,)
 
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
