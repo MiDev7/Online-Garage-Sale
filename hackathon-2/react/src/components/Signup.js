@@ -13,10 +13,15 @@ function Signup() {
     const [values, setValues] = React.useState({
         phone:'',
         password: '',
+        confirmPassword:'',
         showPassword: false,
       });
     
       const handleChange = (prop) => (event) => {
+        setValues({ ...values, [prop]: event.target.value });
+      };
+
+      const handleChangeConfirmPassword = (prop) => (event) => {
         setValues({ ...values, [prop]: event.target.value });
       };
     
@@ -26,10 +31,21 @@ function Signup() {
           showPassword: !values.showPassword,
         });
       };
+
+      const handleClickShowConPassword = () => {
+        setValues({
+          ...values,
+          showPassword: !values.showPassword,
+        });
+      };
+    
     
       
     
       const handleMouseDownPassword = (event) => {
+        event.preventDefault();
+      };
+      const handleMouseDownConfirmPassword = (event) => {
         event.preventDefault();
       };
     
@@ -79,18 +95,18 @@ function Signup() {
                     </Grid>
                     <Grid item xs={12} >
                         <FormControl  variant="filled" fullWidth >
-                            <InputLabel htmlFor="filled-adornment-password">Confirm Password</InputLabel>
+                            <InputLabel htmlFor="filled-adornment-confirmPassword">Confirm Password</InputLabel>
                             <FilledInput
-                                id="filled-adornment-password"
+                                id="filled-adornment-confirmPassword"
                                 type={values.showPassword ? 'text' : 'password'}
-                                value={values.password}
-                                onChange={handleChange('password')}
+                                value={values.confirmPassword}
+                                onChange={handleChangeConfirmPassword('confirmPassword')}
                                 endAdornment={
                                 <InputAdornment position="end">
                                     <IconButton
-                                    aria-label="toggle password visibility"
-                                    onClick={handleClickShowPassword}
-                                    onMouseDown={handleMouseDownPassword}
+                                    aria-label="toggle confirm password visibility"
+                                    onClick={handleClickShowConPassword}
+                                    onMouseDown={handleMouseDownConfirmPassword}
                                     edge="end"
                                     >
                                     {values.showPassword ? <VisibilityOff /> : <Visibility />}
@@ -100,13 +116,13 @@ function Signup() {
                             />
                             </FormControl>
                     </Grid>
-                    <Grid item xs={12} >
-                        <MuiPhoneNumber defaultCountry={'us'} onChange={handleChange} variant='filled' label='Phone number' value={values.phone}  fullWidth/>
+                    {/* <Grid item xs={12} >
+                        <MuiPhoneNumber defaultCountry={'au'} onChange={handleChange} variant='filled' label='Phone number' value={values.phone}  fullWidth/>
                     </Grid>
                     <Grid item xs={12}>
                     <   Button type='submit' variant='contained' fullWidth>Submit</Button>
                     </Grid>
-                    
+                     */}
                 </Grid>
             </Card>
         </div>
