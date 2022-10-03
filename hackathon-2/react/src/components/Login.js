@@ -36,17 +36,17 @@ function Login() {
         <Header></Header>
       </div>
       <div>
-        <Card>
+        <Card sx={{ maxWidth: 500 , padding: 5, margin:'auto',marginTop:5, position:'relative'}}>
           <Grid container spacing={2}>
             <Grid item xs={12}>
-              <Typography textAlign='center' variant='h3' >
+              <Typography textAlign='center' variant='h3' color="primary" fontWeight="bold"  >
                 LOGIN
               </Typography>
             </Grid>
-            <Grid item sx={12} sm={6} >
-              <TextField label="username" placeholder='Enter your username' variant='filled' fullWidth></TextField>
+            <Grid item xs={12}>
+              <TextField label="Username" placeholder='Enter your username' variant='filled' fullWidth></TextField>
             </Grid>
-            <Grid item sx={12} sm={6}>
+            <Grid item xs={12}>
             
               <FormControl  variant="filled" fullWidth >
                 <InputLabel htmlFor="filled-adornment-password">Password</InputLabel>
@@ -72,7 +72,7 @@ function Login() {
             </Grid>
             <Grid item xs={12}>
                   <   Button type='submit' variant='contained' fullWidth>Login</Button>
-                  </Grid>
+            </Grid>
           </Grid>
         </Card>
       </div>
