@@ -10,6 +10,7 @@ urlpatterns = [
     path('shop/',views.index,name='shop'),
     path('aboutus/',views.index,name='aboutus'),
     path('contactus/',views.index,name='contactus'),
+    path('checkout/', views.index, name='checkout'),
 
 ]
 # ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

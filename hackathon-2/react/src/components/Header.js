@@ -48,7 +48,6 @@ function Header() {
 
   return (
         <React.Fragment>
-            
                 <AppBar sx={{
                     background : '#F2F2F2',
                     position: 'relative'
@@ -78,26 +77,23 @@ function Header() {
                                     onChange={handleChange}
                                     indicatorColor="primary">
                                         {
-
-                                            arr.map(item =>
+                                        arr.map(item =>
                                                 <Tab key={item.title} href={item.link} tabIndex={item.id} label={item.title}/>
                                                 
                                             )
                                         }
-                                    
                                     </Tabs>
-                                    
-                                    
                                 </>
                             )
                         }
                         {user ? (
-
                             <>
                                 <Badge color="error" badgeContent={items.length} sx={{
                                             marginLeft: 'auto',
                                         }} showZero>
+                                    <a href="../checkout" >
                                         <ShoppingBasketIcon color='primary' />
+                                    </a>  
                                 </Badge>
                                 <Button onClick={logoutUser} sx={{
                                     marginLeft: "25px"
@@ -114,8 +110,6 @@ function Header() {
                                 }}variant="contained">Register</Button>
                             </>
                         )}
-            
-                        
                     </Toolbar>
                 </AppBar>  
                 
