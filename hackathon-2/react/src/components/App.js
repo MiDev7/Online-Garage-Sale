@@ -9,6 +9,7 @@ import {BrowserRouter as Router, Routes, Route, Link, Redirect} from 'react-rout
 import { AuthProvider } from "./context/Authcontext"; 
 import ContactUs from './ContactUs'
 import Header from './Header';
+import { CartProvider } from './context/CartContext';
 
 const theme = createTheme({
   palette: {
@@ -26,6 +27,10 @@ const theme = createTheme({
     },
     secondary: {
       main: '#F2F2F2'
+    },
+    error:{
+      main:'#f2ccb6',
+      contrastText: '#194013'
     }
   },
   components: {
@@ -44,19 +49,21 @@ const theme = createTheme({
 function App() {
   return (
   <ThemeProvider theme={theme}>
-    <Router>
-      <AuthProvider>
-        <Header></Header>
-        <Routes>
-          <Route exact path='/' element={<Home/>}/>
-          <Route path='/shop' element={<Shop/>}/>
-          <Route path='/signup' element={<Signup/>}/>
-          <Route path='/login' element={<Login/>}/>
-          <Route path='/aboutus' element={<AboutUs/>}/>
-          <Route path='/contactus' element={<ContactUs/>}/>
-        </Routes>
-      </AuthProvider>
-    </Router>
+      <Router>
+        <AuthProvider>
+          <CartProvider>
+            <Header></Header>
+            <Routes>
+              <Route exact path='/' element={<Home/>}/>
+              <Route path='/shop' element={<Shop/>}/>
+              <Route path='/signup' element={<Signup/>}/>
+              <Route path='/login' element={<Login/>}/>
+              <Route path='/aboutus' element={<AboutUs/>}/>
+              <Route path='/contactus' element={<ContactUs/>}/>
+            </Routes>
+          </CartProvider>
+        </AuthProvider>
+      </Router>
   </ThemeProvider>
 
   );

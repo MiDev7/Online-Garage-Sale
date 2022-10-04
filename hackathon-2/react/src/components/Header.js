@@ -2,12 +2,15 @@ import React,{useState , useContext} from 'react'
 import {AppBar, Typography,Toolbar, Tabs, Tab,Button,useMediaQuery,useTheme } from '@mui/material';
 import Drawer from './Drawer';
 import AuthContext from "./context/Authcontext";
+import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import Badge from '@mui/material/Badge';
+import CartContext from './context/CartContext';
 
 
 function Header() {
     const [value, setValue] = useState(0);
-
-
+    const {items} = useContext(CartContext)
+    var count = items.length
     const handleChange = (event, newValue) => {
         setValue(newValue);
       };
@@ -16,7 +19,7 @@ function Header() {
     const { user, logoutUser } = useContext(AuthContext);
 
 
-    const items =  {
+    const tabs =  {
         "1":{
             "title":"HOME",
             "link":"../"
@@ -36,8 +39,8 @@ function Header() {
     }
 
     var arr =[]
-    Object.keys(items).forEach(function(key) {
-        arr.push(items[key]);
+    Object.keys(tabs).forEach(function(key) {
+        arr.push(tabs[key]);
       });
 
 
@@ -83,25 +86,35 @@ function Header() {
                                         }
                                     
                                     </Tabs>
-                                    {user ? (
-                                        <Button onClick={logoutUser} sx={{
-                                            marginLeft: "auto"
-                                        }}variant="contained">Logout</Button>
-                                    ):(
-                                        <>
-                                            <Button href="../login" sx={{
-                                                marginLeft: "auto"
-                                            }}variant="contained">Login</Button>
-                                            <Button href="../signup" sx={{
-                                                marginLeft: "10px"
-                                            }}variant="contained">Register</Button>
-                                        </>
-                                    )}
+                                    
                                     
                                 </>
                             )
                         }
-                        
+                        {user ? (
+
+                            <>
+                                <Badge color="error" badgeContent={items.length} sx={{
+                                            marginLeft: 'auto',
+                                        }} showZero>
+                                        <ShoppingBasketIcon color='primary' />
+                                </Badge>
+                                <Button onClick={logoutUser} sx={{
+                                    marginLeft: "25px"
+                                }}variant="contained">Logout</Button>
+                                
+                            </>
+                        ):(
+                            <>
+                                <Button href="../login" sx={{
+                                    marginLeft: "auto"
+                                }}variant="contained">Login</Button>
+                                <Button href="../signup" sx={{
+                                    marginLeft: "10px"
+                                }}variant="contained">Register</Button>
+                            </>
+                        )}
+            
                         
                     </Toolbar>
                 </AppBar>  

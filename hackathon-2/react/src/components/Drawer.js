@@ -9,7 +9,8 @@ function Drawer() {
     <React.Fragment>
         <SwipeableDrawer 
         sx={{
-            padding: "20px"
+            padding: "20px",
+            width: "90%"
         }}
         open={openDrawer}
             onClose={()=>setOpenDrawer(false)}
