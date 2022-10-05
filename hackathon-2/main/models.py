@@ -1,6 +1,7 @@
 from platform import mac_ver
 from statistics import mode
 from tokenize import blank_re
+from unicodedata import category
 from django.db import models
 from django.contrib.auth.models import User
 import pandas
@@ -10,6 +11,12 @@ import os
 # Model
 model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
 
+
+
+class Categories(models.Model):
+    class Meta:
+        verbose_name_plural = "Categories"
+    name = models.CharField(max_length = 150 , blank=True, null=True)
 # Images
 
 
@@ -31,6 +38,8 @@ class Products(models.Model):
     seller = models.ForeignKey(User,on_delete=models.SET_NULL, null=True, blank=True)
     price = models.DecimalField(max_digits=15, decimal_places= 2)
     qty= models.IntegerField(default=1, null=True,blank=True)
+    description = models.TextField(max_length=2000, null=True, blank=True)
+    category = models.ManyToManyField(Categories)
 
     
     def __str__(self):
