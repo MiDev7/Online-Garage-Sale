@@ -5,6 +5,7 @@ from django.db import models
 from django.contrib.auth.models import User
 import pandas
 import torch 
+import os
 
 # Model
 model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
@@ -27,7 +28,7 @@ class Products(models.Model):
         verbose_name_plural = "Products"
     name = models.CharField(max_length=100, blank=True, null=True)
     image = models.ImageField(upload_to='Products/')
-    seller = models.ForeignKey(Customers,on_delete=models.SET_NULL, null=True, blank=True)
+    seller = models.ForeignKey(User,on_delete=models.SET_NULL, null=True, blank=True)
     price = models.DecimalField(max_digits=15, decimal_places= 2)
     qty= models.IntegerField(default=1, null=True,blank=True)
 
@@ -46,19 +47,26 @@ class Products(models.Model):
     
 
     def save(self, *args, **kwargs):
+        directory = os.getcwd()
+
+        print(directory)
+        super(Products, self).save(*args, **kwargs)
+        print()
         print(self.image.url)
-        dir = 'main/static/image/Products'
+        dir = os.getcwd() + '/main/static/image'
         imgs = [dir + self.image.url]  # batch of images
 
         # Inference
-        results = model(imgs)
-        df = results.pandas().xyxy[0].sort_values(by=['confidence'], ascending=False)
-
         try: 
+            results = model(imgs)
+            df = results.pandas().xyxy[0].sort_values(by=['confidence'], ascending=False)
+
+        
             self.name = df[['name','confidence']].loc[0]['name']
 
         except:
-            self.name = 'undefined'
+            pass
+            #self.name = 'undefined'
 
         super(Products, self).save(*args, **kwargs)
         

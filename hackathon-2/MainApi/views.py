@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework import status
+from rest_framework.views import APIView
 
 
 
@@ -27,7 +28,11 @@ def getUser(request):
     userSerializer = UserSerializer(users, many=True)
     return Response(userSerializer.data)
 
+class CreateProducts(APIView):
+    serializer_class = AddProductSerializer
 
+    def post(self, request, format=None):
+        pass
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
