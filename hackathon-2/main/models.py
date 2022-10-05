@@ -1,5 +1,6 @@
 from platform import mac_ver
 from statistics import mode
+from tabnanny import verbose
 from tokenize import blank_re
 from unicodedata import category
 from django.db import models
@@ -17,11 +18,16 @@ class Categories(models.Model):
     class Meta:
         verbose_name_plural = "Categories"
     name = models.CharField(max_length = 150 , blank=True, null=True)
+
+    def __str__(self):
+        return self.name
 # Images
 
 
 # Create your models here.
 class Customers(models.Model):
+    class Meta:
+        verbose_name_plural = "Customers"
     user = models.OneToOneField(User, null=True,on_delete=models.CASCADE,blank=False,unique=True, related_name="customer")
     first_name = models.CharField(max_length=150, null=True)
     last_name = models.CharField(max_length = 150, null=True)
@@ -39,7 +45,7 @@ class Products(models.Model):
     price = models.DecimalField(max_digits=15, decimal_places= 2)
     qty= models.IntegerField(default=1, null=True,blank=True)
     description = models.TextField(max_length=2000, null=True, blank=True)
-    category = models.ManyToManyField(Categories)
+    category = models.ManyToManyField(Categories, related_name='category')
 
     
     def __str__(self):
@@ -83,6 +89,8 @@ class Products(models.Model):
 #     user = models.ForeignKey(users, on_delete=models.SET_NULL,null=True,blank=True)
 
 class Order(models.Model):
+    class Meta:
+        verbose_name_plural = "Orders"
     customer = models.ForeignKey(Customers, on_delete= models.SET_NULL,blank=True, null=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
     orderhost = models.CharField(null=True, blank=False, max_length=400)
@@ -109,6 +117,8 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
+    class Meta:
+        verbose_name_plural = "OrderItems"
     product = models.ForeignKey(Products, on_delete=models.SET_NULL, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL,null=True)
     quantity = models.IntegerField(default=0, null=True,blank=True)
@@ -121,6 +131,8 @@ class OrderItem(models.Model):
 
 
 class ShippingDetails(models.Model):
+    class Meta:
+        verbose_name_plural = "ShippingDetails"
     customer = models.ForeignKey(Customers, on_delete=models.SET_NULL, null=True)
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
     address = models.CharField(max_length=200, null=False)
