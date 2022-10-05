@@ -10,6 +10,9 @@ import { AuthProvider } from "./context/Authcontext";
 import ContactUs from './ContactUs'
 import Header from './Header';
 import { CartProvider } from './context/CartContext';
+import Checkout from './Checkout'
+import Admin from './Admin'
+import AddProducts from './AddProducts';
 
 const theme = createTheme({
   palette: {
@@ -49,9 +52,9 @@ const theme = createTheme({
 function App() {
   return (
   <ThemeProvider theme={theme}>
+    <CartProvider>
       <Router>
         <AuthProvider>
-          <CartProvider>
             <Header></Header>
             <Routes>
               <Route exact path='/' element={<Home/>}/>
@@ -60,10 +63,14 @@ function App() {
               <Route path='/login' element={<Login/>}/>
               <Route path='/aboutus' element={<AboutUs/>}/>
               <Route path='/contactus' element={<ContactUs/>}/>
+              <Route path='/checkout' element={<Checkout/>}/>
+              <Route path='/adminPanel' element={<Admin/>}/>
+              <Route path='/adminPanel/Products' element={<AddProducts/>}/>
+
             </Routes>
-          </CartProvider>
         </AuthProvider>
       </Router>
+    </CartProvider>
   </ThemeProvider>
 
   );

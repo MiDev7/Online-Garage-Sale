@@ -5,12 +5,27 @@ import AuthContext from "./context/Authcontext";
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
 import Badge from '@mui/material/Badge';
 import CartContext from './context/CartContext';
+import IconButton from '@mui/material/IconButton';
+import Avatar from '@mui/material/Avatar';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Tooltip from '@mui/material/Tooltip';
+import Logout from '@mui/icons-material/Logout';
+import Divider from '@mui/material/Divider';
+import { Navigate } from 'react-router-dom';
+
 
 
 function Header() {
     const [value, setValue] = useState(0);
     const {items} = useContext(CartContext)
-    var count = items.length
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const open = Boolean(anchorEl);
+
+    const handleClick = (event) => {
+        setAnchorEl(event.currentTarget);
+      };
     const handleChange = (event, newValue) => {
         setValue(newValue);
       };
@@ -18,7 +33,13 @@ function Header() {
     const isMatch =  useMediaQuery(DrawerTheme.breakpoints.down("md"));
     const { user, logoutUser } = useContext(AuthContext);
 
+    const adminPanel = (event) => {
+        <Navigate to="../adminPanel" />
+    }
 
+    const handleClose = () => {
+        setAnchorEl(null);
+      };
     const tabs =  {
         "1":{
             "title":"HOME",
@@ -95,9 +116,69 @@ function Header() {
                                         <ShoppingBasketIcon color='primary' />
                                     </a>  
                                 </Badge>
-                                <Button onClick={logoutUser} sx={{
-                                    marginLeft: "25px"
-                                }}variant="contained">Logout</Button>
+                                <Tooltip title="Account settings">
+                                    <IconButton
+                                        onClick={handleClick}
+                                        size="small"
+                                        sx={{ ml: 2 }}
+                                        aria-controls={open ? 'account-menu' : undefined}
+                                        aria-haspopup="true"
+                                        aria-expanded={open ? 'true' : undefined}
+                                    >
+                                        <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+                                    </IconButton>
+                                </Tooltip>
+                                <Menu
+                                    anchorEl={anchorEl}
+                                    id="account-menu"
+                                    open={open}
+                                    onClose={handleClose}
+                                    onClick={handleClose}
+                                    PaperProps={{
+                                    elevation: 0,
+                                    sx: {
+                                        overflow: 'visible',
+                                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                                        mt: 1.5,
+                                        '& .MuiAvatar-root': {
+                                        width: 32,
+                                        height: 32,
+                                        ml: -0.5,
+                                        mr: 1,
+                                        },
+                                        '&:before': {
+                                        content: '""',
+                                        display: 'block',
+                                        position: 'absolute',
+                                        top: 0,
+                                        right: 14,
+                                        width: 10,
+                                        height: 10,
+                                        bgcolor: 'background.paper',
+                                        transform: 'translateY(-50%) rotate(45deg)',
+                                        zIndex: 0,
+                                        },
+                                    },
+                                    }}
+                                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                                >
+                                    <MenuItem onClick={adminPanel} >
+                                        <Avatar /> Profile
+                                    </MenuItem>
+                                    <Divider />
+                                    <MenuItem>
+                                        <Button onClick={logoutUser} sx={{
+                                        marginLeft: "25px"
+                                    }}variant="text">
+                                            <ListItemIcon>
+                                                <Logout fontSize="medium" fontWeight="700"  />
+                                            </ListItemIcon>
+                                        Logout
+                                        </Button>
+                                    </MenuItem>
+                                </Menu>
+                                
                                 
                             </>
                         ):(

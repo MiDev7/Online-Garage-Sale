@@ -32,10 +32,8 @@ function Login() {
     pwdInput = password;
     usernameInput.length > 0 && loginUser(usernameInput, pwdInput);
     console.log('form submitted')
-    if (user) {
-      <Navigate to="../" />
-    } else {
-      <Navigate to="../login"/>
+    {
+      user ? (<Navigate to="../" />):(<Navigate to="../login"/>)
     }
   };
 
