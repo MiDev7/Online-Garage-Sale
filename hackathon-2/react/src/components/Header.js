@@ -112,7 +112,7 @@ function Header() {
                                 <Badge color="error" badgeContent={items.length} sx={{
                                             marginLeft: 'auto',
                                         }} showZero>
-                                    <a href="../checkout" >
+                                    <a href="../cart" >
                                         <ShoppingBasketIcon color='primary' />
                                     </a>  
                                 </Badge>

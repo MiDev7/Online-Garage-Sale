@@ -5,7 +5,7 @@ class UsersAdmin(admin.ModelAdmin):
     list_display = ['user', 'first_name','last_name']
 
 class ProductsAdmin(admin.ModelAdmin):
-    list_display = [ 'name','image','seller','price','qty','description']
+    list_display = [ 'name','image','seller','price','qty','description', 'slug']
 
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name']
