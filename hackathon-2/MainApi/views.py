@@ -1,5 +1,6 @@
 from distutils.command.upload import upload
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from numpy import product
 from .serializers import *
 from main.models import *
 from rest_framework import generics
@@ -17,6 +18,10 @@ import torch
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 from django.conf import settings
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.utils import timezone
+from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 
 
 # Create your views here.
@@ -103,3 +108,36 @@ def addProduct(request):
 
 
     return JsonResponse('Payment complete!' , safe=False)
+
+# ADD TO CART FUNCTION
+@login_required
+class AddToCartView(APIView):
+
+    def post(self, request, *args,**kawrgs):
+        slug = request.data.get('slug', None)
+        if slug is None:
+            return Response({"message": "Invalid reuqest"}, status=HTTP_400_BAD_REQUEST)
+        item = get_object_or_404(Products, slug=slug)
+        order_item, created = OrderItem.objects.get_or_create(
+            productitemitem=item,
+            user=request.user,
+            ordered=False
+        )
+        order_qs = Order.objects.filter(user=request.user, ordered=False)
+        if order_qs.exists():
+            order = order_qs[0]
+            # check if the order item is in the order
+            if order.items.filter(item__slug=item.slug).exists():
+                order_item.quantity += 1
+                order_item.save()
+                return Response(status=HTTP_200_OK)
+
+            else:
+                order.items.add(order_item)
+                return Response(status=HTTP_200_OK)
+        else:
+            ordered_date = timezone.now()
+            order = Order.objects.create(
+                user=request.user, ordered_date=ordered_date)
+            order.items.add(order_item)
+            return Response(status=HTTP_200_OK)

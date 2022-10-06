@@ -3,6 +3,7 @@ from statistics import mode
 from tabnanny import verbose
 from tokenize import blank_re
 from unicodedata import category
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
 import pandas
@@ -105,8 +106,11 @@ class ShippingDetails(models.Model):
 class OrderItem(models.Model):
     class Meta:
         verbose_name_plural = "OrderItems"
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+                             on_delete=models.CASCADE, null=True, blank=True)
     product = models.ForeignKey(Products, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=0, null=True,blank=True)
+    ordered = models.BooleanField(default=False,null=True,blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
