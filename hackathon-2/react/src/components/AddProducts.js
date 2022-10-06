@@ -26,6 +26,23 @@ const MenuProps = {
   }
 };
 
+function getCookie(name) {
+  let cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;
+}
+const csrftoken = getCookie('csrftoken');
+
 const names = [
   "Oliver Hansen",
   "Van Henry",
@@ -46,13 +63,13 @@ function getStyles(name, personName, theme) {
         ? theme.typography.fontWeightRegular
         : theme.typography.fontWeightMedium
   };
-}
+} 
 
 
 function AddProducts() {
   const theme = useTheme();
   const [personName, setPersonName] = React.useState([]);
-
+  const [productName,setProductName] = React.useState()
   const handleChange = (event) => {
     const {
       target: { value }
@@ -63,11 +80,34 @@ function AddProducts() {
     );
   };
   const [Url, setUrl] = useState();
+  const handleChangeName = (event) => {
+    setProductName(event.target.value)
+  }
   const handleUpload = (event) => {
     setUrl(event.target.value);
-  
+    console.log(event.target.value)
+    let imageUrl = document.getElementById("fileInput").files[0];
+    let formData = new FormData();
+
+    formData.append("image", imageUrl);                                
+    
+    fetch('http://127.0.0.1:8000/api/addProduct/',{
+    method:'POST',
+    headers:{
+      'X-CSRFToken' : csrftoken
+    },
+    body: formData
+    })
+    .then((response) => response.json())
+    .then((data)=>{
+      console.log('data sent',data)
+      setProductName(data.result)
+    })
     console.log("value is:", event.target.value);
   };
+
+  
+
   const AddProduct = (
     <div>
       <Grid container spacing={2}>
@@ -80,11 +120,11 @@ function AddProducts() {
           <Button variant="contained" component="label" color="primary">
           {" "}
             <AddIcon /> Upload a file
-             <input type="file" hidden value={Url} onChange={handleUpload}/>
+             <input type="file" id='fileInput'hidden value={Url} name='image' onChange={handleUpload} />
           </Button>
         </Grid>
         <Grid item xs={12}>
-          <TextField label='Product Name' variant='filled' placeholder='Enter product name' fullWidth ></TextField>
+          <TextField label='Product Name'value={productName}  variant='filled' placeholder='Enter product name' fullWidth  onChange={handleChangeName}></TextField>
         </Grid>
         <Grid item xs={12}>
           <TextField label='Price' type='number' placeholder='Enter price of unity' variant='filled' fullWidth></TextField>
@@ -124,7 +164,17 @@ function AddProducts() {
           </FormControl>
         </Grid>
         <Grid item xs={12}>
-          < Button type='submit' variant='contained'   fullWidth>Submit</Button>
+          <TextField
+            id="filled-textarea"
+            label="Description"
+            placeholder="Enter the description"
+            multiline
+            variant="filled"
+            fullWidth
+          />
+        </Grid>
+        <Grid item xs={12}>
+          < Button type='submit' variant='contained'  fullWidth>Submit</Button>
         </Grid>
       </Grid>
     </div>

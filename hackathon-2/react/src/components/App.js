@@ -55,7 +55,7 @@ function App() {
     <CartProvider>
       <Router>
         <AuthProvider>
-            <Header></Header>
+          <Header></Header>
             <Routes>
               <Route exact path='/' element={<Home/>}/>
               <Route path='/shop' element={<Shop/>}/>
@@ -66,10 +66,17 @@ function App() {
               <Route path='/checkout' element={<Checkout/>}/>
               <Route path='/adminPanel' element={<Admin/>}/>
               <Route path='/adminPanel/Products' element={<AddProducts/>}/>
-
             </Routes>
         </AuthProvider>
       </Router>
+      {/* <Router>
+        <AuthProvider>
+            <Routes>
+              
+            </Routes>
+        </AuthProvider>
+      </Router> */}
+      
     </CartProvider>
   </ThemeProvider>
 

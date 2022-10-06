@@ -63,7 +63,7 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
+const AdminDrawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
   ({ theme, open }) => ({
     '& .MuiDrawer-paper': {
       position: 'relative',
@@ -126,7 +126,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
           </IconButton>
         </Toolbar>
       </AppBar>
-      <Drawer variant="permanent" open={open}>
+      <AdminDrawer variant="permanent" open={open}>
         <Toolbar
           sx={{
             display: 'flex',
@@ -145,7 +145,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
           <Divider sx={{ my: 1 }} />
           {secondaryListItems}
         </List>
-      </Drawer>
+      </AdminDrawer>
       <Box
         component="main"
         sx={{

@@ -25,7 +25,7 @@ function Login() {
 
   let pwdInput
 
-  const { loginUser } = useContext(AuthContext);
+  const { user ,loginUser } = useContext(AuthContext);
   const handleSubmit = e => {
     e.preventDefault();
     usernameInput = username;

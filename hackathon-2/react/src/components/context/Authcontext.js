@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }) => {
       setAuthTokens(data);
       setUser(jwt_decode(data.access));
       localStorage.setItem("authTokens", JSON.stringify(data));
-      navigate.push("/");
+      navigate("/");
     } else {
       alert("Something went wrong!");
     }
@@ -61,7 +61,7 @@ export const AuthProvider = ({ children }) => {
       })
     });
     if (response.status === 201) {
-      navigate.push("/login");
+      navigate("/login");
     } else {
       alert("Something went wrong!");
     }
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }) => {
     setAuthTokens(null);
     setUser(null);
     localStorage.removeItem("authTokens");
-    navigate.push("/");
+    navigate("/");
   };
 
   const contextData = {
