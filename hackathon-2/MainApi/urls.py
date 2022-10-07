@@ -13,5 +13,6 @@ urlpatterns = [
     path('test/', views.testEndPoint, name='test'),
     path('addProduct/', views.addProduct, name='AddProduct'),
     path('', views.getRoutes),
-    path('addToCart/', views.addToCartView, name= 'add-to-cart')
+    path('addToCart/', views.addToCartView, name= 'add-to-cart'),
+    path('cartCount/', views.views.cartCountView, name='cartCount')
 ]

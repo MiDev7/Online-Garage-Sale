@@ -130,3 +130,11 @@ def addToCartView(request):
         orderItem = OrderItem.objects.all()
         serializer = OrderItemSerializer(orderItem, many=True)
         return Response(serializer.data)
+
+
+@api_view(['GET', 'POST'])
+@permission_classes([AllowAny,])
+def cartCountView(request):
+    if request.method == 'POST':
+        count = Order.total_item_count(request.user)
+        return JsonResponse({'count': count}, safe=False)

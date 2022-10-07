@@ -144,11 +144,27 @@ class Order(models.Model):
 
     @classmethod
     def add_item_to_cart(cls,customer, item):
+        currentUser = User.objects.get(username = customer)
+        currentCustomer = Customers.objects.get(user=currentUser)
+        print(currentCustomer)
         order_qs, created = Order.objects.get_or_create(ordered=False, customer=customer)
+
         product = Products.objects.get(id=item)
         orderItem, created = order_qs.orders.get_or_create(product=product)   
         orderItem.quantity += 1
         orderItem.save()
+
+    @classmethod
+    def total_item_count(cls, customer):
+        currentUser = User.objects.get(username = customer)
+        currentCustomer = Customers.objects.get(user=currentUser)
+        order_qs, created = Order.objects.get_or_create(ordered=False, customer=currentCustomer)
+        count = 0
+        total_item = order_qs.orders.all()
+        for product in total_item:
+            count += product.quantity
+
+        return count
 
 
 
