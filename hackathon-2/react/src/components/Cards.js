@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
@@ -9,9 +9,13 @@ import Grid from '@mui/material/Grid';
 // import {useContext} from 'react'
 // import  CartContext  from './context/CartContext';
 import {addToCartUrl} from './constant/Constants'
+// import {Box} from '@mui/material'
+import ItemContext from './context/ItemContext'
 
 
 function getCookie(name) {
+    
+
     let cookieValue = null;
     if (document.cookie && document.cookie !== '') {
         const cookies = document.cookie.split(';');
@@ -30,6 +34,7 @@ function getCookie(name) {
   
 
 function Cards() {
+    const {click, setClick} = useContext(ItemContext)
     const [products, setProduct] = useState([])
     const handleAddToCart = (productID) => {
         console.log(productID)
@@ -47,6 +52,8 @@ function Cards() {
         .then((data) =>{
             console.log(data)
         })
+
+        setClick(click + 1)
         
      }
     useEffect(() => {
@@ -73,7 +80,7 @@ function Cards() {
         {
         
             products.map((item)=>
-            <Grid  key={item.id} item xs={3}>
+            <Grid  key={item.id} item xs={12} md={3}>
                 <Card sx={{ maxWidth: 250 }}>
                     <CardMedia
                             component="img"

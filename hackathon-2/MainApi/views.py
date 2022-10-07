@@ -120,10 +120,7 @@ def addToCartView(request):
         if productId is None:
             return Response({"message": "Invalid reuqest"}, status=HTTP_400_BAD_REQUEST)
         else:
-            currentUser = User.objects.get(username = request.user)
-            currentCustomer = Customers.objects.get(user=currentUser)
-            print(currentCustomer)
-            Order.add_item_to_cart(currentCustomer, productId)
+            Order.add_item_to_cart(request.user, productId)
             return JsonResponse('Added to cart', safe=False)
 
     if request.method == 'GET':
@@ -136,5 +133,9 @@ def addToCartView(request):
 @permission_classes([AllowAny,])
 def cartCountView(request):
     if request.method == 'POST':
+        count = Order.total_item_count(request.user)
+        return JsonResponse({'count': count}, safe=False)
+
+    if request.method == 'GET':
         count = Order.total_item_count(request.user)
         return JsonResponse({'count': count}, safe=False)

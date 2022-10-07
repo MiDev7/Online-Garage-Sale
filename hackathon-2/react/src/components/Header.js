@@ -17,9 +17,10 @@ import { Navigate } from 'react-router-dom';
 
 
 
+
 function Header() {
+    const{count} = useContext(CartContext)
     const [value, setValue] = useState(0);
-    const {items} = useContext(CartContext)
     const [anchorEl, setAnchorEl] = React.useState(null);
     const open = Boolean(anchorEl);
 
@@ -109,7 +110,7 @@ function Header() {
                         }
                         {user ? (
                             <>
-                                <Badge color="error" badgeContent={items.length} sx={{
+                                <Badge color="error" badgeContent={count} sx={{
                                             marginLeft: 'auto',
                                         }} showZero>
                                     <a href="../cart" >

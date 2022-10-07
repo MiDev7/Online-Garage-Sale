@@ -13,6 +13,7 @@ import { CartProvider } from './context/CartContext';
 import Checkout from './Checkout'
 import Admin from './Admin'
 import AddProducts from './AddProducts';
+import  {ItemProvider } from './context/ItemContext';
 
 const theme = createTheme({
   palette: {
@@ -52,21 +53,24 @@ const theme = createTheme({
 function App() {
   return (
   <ThemeProvider theme={theme}>
-    <CartProvider>
       <Router>
         <AuthProvider>
-          <Header></Header>
-            <Routes>
-              <Route exact path='/' element={<Home/>}/>
-              <Route path='/shop' element={<Shop/>}/>
-              <Route path='/signup' element={<Signup/>}/>
-              <Route path='/login' element={<Login/>}/>
-              <Route path='/aboutus' element={<AboutUs/>}/>
-              <Route path='/contactus' element={<ContactUs/>}/>
-              <Route path='/checkout' element={<Checkout/>}/>
-              <Route path='/adminPanel' element={<Admin/>}/>
-              <Route path='/adminPanel/Products' element={<AddProducts/>}/>
-            </Routes>
+          <ItemProvider>
+            <CartProvider>
+                <Header></Header>
+                  <Routes>
+                    <Route exact path='/' element={<Home/>}/>
+                    <Route path='/shop' element={<Shop/>}/>
+                    <Route path='/signup' element={<Signup/>}/>
+                    <Route path='/login' element={<Login/>}/>
+                    <Route path='/aboutus' element={<AboutUs/>}/>
+                    <Route path='/contactus' element={<ContactUs/>}/>
+                    <Route path='/checkout' element={<Checkout/>}/>
+                    <Route path='/adminPanel' element={<Admin/>}/>
+                    <Route path='/adminPanel/Products' element={<AddProducts/>}/>
+                  </Routes>
+            </CartProvider>
+          </ItemProvider>
         </AuthProvider>
       </Router>
       {/* <Router>
@@ -76,8 +80,6 @@ function App() {
             </Routes>
         </AuthProvider>
       </Router> */}
-      
-    </CartProvider>
   </ThemeProvider>
 
   );

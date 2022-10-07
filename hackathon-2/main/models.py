@@ -147,7 +147,7 @@ class Order(models.Model):
         currentUser = User.objects.get(username = customer)
         currentCustomer = Customers.objects.get(user=currentUser)
         print(currentCustomer)
-        order_qs, created = Order.objects.get_or_create(ordered=False, customer=customer)
+        order_qs, created = Order.objects.get_or_create(ordered=False, customer=currentCustomer)
 
         product = Products.objects.get(id=item)
         orderItem, created = order_qs.orders.get_or_create(product=product)   
