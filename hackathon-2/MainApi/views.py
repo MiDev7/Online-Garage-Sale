@@ -110,34 +110,23 @@ def addProduct(request):
     return JsonResponse('Payment complete!' , safe=False)
 
 # ADD TO CART FUNCTION
-@login_required
-class AddToCartView(APIView):
+@api_view(['GET', 'POST'])
+@permission_classes([AllowAny,])
+def addToCartView(request):
 
-    def post(self, request, *args,**kawrgs):
-        slug = request.data.get('slug', None)
-        if slug is None:
+    if request.method == 'POST':
+        productId= request.data.get('productID', None)
+        print(productId)
+        if productId is None:
             return Response({"message": "Invalid reuqest"}, status=HTTP_400_BAD_REQUEST)
-        item = get_object_or_404(Products, slug=slug)
-        order_item, created = OrderItem.objects.get_or_create(
-            productitemitem=item,
-            user=request.user,
-            ordered=False
-        )
-        order_qs = Order.objects.filter(user=request.user, ordered=False)
-        if order_qs.exists():
-            order = order_qs[0]
-            # check if the order item is in the order
-            if order.items.filter(item__slug=item.slug).exists():
-                order_item.quantity += 1
-                order_item.save()
-                return Response(status=HTTP_200_OK)
-
-            else:
-                order.items.add(order_item)
-                return Response(status=HTTP_200_OK)
         else:
-            ordered_date = timezone.now()
-            order = Order.objects.create(
-                user=request.user, ordered_date=ordered_date)
-            order.items.add(order_item)
-            return Response(status=HTTP_200_OK)
+            currentUser = User.objects.get(username = request.user)
+            currentCustomer = Customers.objects.get(user=currentUser)
+            print(currentCustomer)
+            Order.add_item_to_cart(currentCustomer, productId)
+            return JsonResponse('Added to cart', safe=False)
+
+    if request.method == 'GET':
+        orderItem = OrderItem.objects.all()
+        serializer = OrderItemSerializer(orderItem, many=True)
+        return Response(serializer.data)

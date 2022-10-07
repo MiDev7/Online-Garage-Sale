@@ -1,16 +1,13 @@
-from platform import mac_ver
-from statistics import mode
-from tabnanny import verbose
-from tokenize import blank_re
-from unicodedata import category
+from ast import Or
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import User
+from numpy import product
 import pandas
 import torch 
 import os
 
-# Model
+# # Model
 model = torch.hub.load('ultralytics/yolov5', 'yolov5s')
 
 
@@ -47,11 +44,11 @@ class Products(models.Model):
     qty= models.IntegerField(default=1, null=True,blank=True)
     description = models.TextField(max_length=2000, null=True, blank=True)
     category = models.ManyToManyField(Categories, related_name='category')
-    slug= models.SlugField(max_length=255, null=True, blank=True)
+    
 
     
     def __str__(self):
-        return self.name
+        return self.name + self.id
 
     @property
     def imageURL(self):
@@ -106,15 +103,14 @@ class ShippingDetails(models.Model):
 class OrderItem(models.Model):
     class Meta:
         verbose_name_plural = "OrderItems"
-    user = models.ForeignKey(settings.AUTH_USER_MODEL,
-                             on_delete=models.CASCADE, null=True, blank=True)
+
     product = models.ForeignKey(Products, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=0, null=True,blank=True)
     ordered = models.BooleanField(default=False,null=True,blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.quantity} of {self.item.title}"
+        return f"{self.quantity} of {self.product.name}"
 
     def get_total_item_price(self):
         return self.quantity * self.product.price
@@ -145,6 +141,15 @@ class Order(models.Model):
         for order_item in self.orders.all():
             total += order_item.get_final_price()
         return total
+
+    @classmethod
+    def add_item_to_cart(cls,customer, item):
+        order_qs, created = Order.objects.get_or_create(ordered=False, customer=customer)
+        product = Products.objects.get(id=item)
+        orderItem, created = order_qs.orders.get_or_create(product=product)   
+        orderItem.quantity += 1
+        orderItem.save()
+
 
 
 

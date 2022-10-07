@@ -45,7 +45,7 @@ export const AuthProvider = ({ children }) => {
     }
   };
   
-  const registerUser = async (username, password, password2) => {
+  const registerUser = async (username, password, password2,email,last_name,first_name) => {
     const response = await fetch("http://127.0.0.1:8000/api/register/", {
       method: "POST",
       headers: {
