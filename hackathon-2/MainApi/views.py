@@ -139,3 +139,20 @@ def cartCountView(request):
     if request.method == 'GET':
         count = Order.total_item_count(request.user)
         return JsonResponse({'count': count}, safe=False)
+
+
+@api_view(['GET','POST'])
+@permission_classes((permissions.AllowAny,))
+def cartView(request):
+    # currentUser = User.objects.get(username = customer)
+    # currentCustomer = Customers.objects.get(user=currentUser)
+    items = Order.objects.all( )
+    serializer = CartSerializer(items, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET','POST'])
+@permission_classes((permissions.AllowAny,))
+def categoriesView(request):
+    items = Categories.objects.all()
+    serializer = CategorySerializer(items, many=True)
+    return Response(serializer.data)

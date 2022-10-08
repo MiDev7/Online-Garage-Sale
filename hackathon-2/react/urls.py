@@ -13,6 +13,7 @@ urlpatterns = [
     path('checkout/', views.index, name='checkout'),
     path('adminPanel/', views.index, name='admin'),
     path('adminPanel/Products', views.index, name='addProducts'),
+    path('cart/', views.index, name='cart'),
 
 ]
 # ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

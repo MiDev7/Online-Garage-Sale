@@ -48,7 +48,7 @@ class Products(models.Model):
 
     
     def __str__(self):
-        return self.name + self.id
+        return self.name 
 
     @property
     def imageURL(self):
@@ -103,14 +103,13 @@ class ShippingDetails(models.Model):
 class OrderItem(models.Model):
     class Meta:
         verbose_name_plural = "OrderItems"
-
     product = models.ForeignKey(Products, on_delete=models.SET_NULL, null=True)
     quantity = models.IntegerField(default=0, null=True,blank=True)
     ordered = models.BooleanField(default=False,null=True,blank=True)
     date_added = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.quantity} of {self.product.name}"
+        return self.product.name
 
     def get_total_item_price(self):
         return self.quantity * self.product.price
@@ -126,6 +125,7 @@ class Order(models.Model):
     customer = models.ForeignKey(Customers, on_delete= models.SET_NULL,blank=True, null=True)
     orders = models.ManyToManyField(OrderItem)
     date_ordered = models.DateTimeField(auto_now_add=True)
+    totalPrice = models.DecimalField(decimal_places = 2,max_digits=15,null=True, blank=True)
     ordered = models.BooleanField(default=False, null=True, blank=False)
     transaction_id = models.CharField(max_length=200, null=True)
     shipping_address = models.ForeignKey(
@@ -155,19 +155,19 @@ class Order(models.Model):
         orderItem.save()
 
     @classmethod
-    def total_item_count(cls, customer):
+    def total_item_count(cls, customer,id):
         currentUser = User.objects.get(username = customer)
         currentCustomer = Customers.objects.get(user=currentUser)
         order_qs, created = Order.objects.get_or_create(ordered=False, customer=currentCustomer)
-        count = 0
-        total_item = order_qs.orders.all()
-        for product in total_item:
-            count += product.quantity
+        product = order_qs.orders.get(id=id)
+        total = product.quantity * product.product.price
+        print (f"{product.product.name} cost {total}")
 
-        return count
+    # def save(self, *args, **kwargs):
 
+    #     self.totalPrice = self.orders.quantity * self.orders.product.price
 
-
+    #     super(Order, self).save(*args, **kwargs)
 
 
 

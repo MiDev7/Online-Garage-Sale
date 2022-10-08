@@ -1,5 +1,5 @@
 import React,{useState , useContext} from 'react'
-import {AppBar, Typography,Toolbar, Tabs, Tab,Button,useMediaQuery,useTheme } from '@mui/material';
+import {AppBar, Typography,Toolbar, Tabs, Tab,Button,useMediaQuery,useTheme, Link } from '@mui/material';
 import Drawer from './Drawer';
 import AuthContext from "./context/Authcontext";
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
@@ -13,7 +13,7 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Tooltip from '@mui/material/Tooltip';
 import Logout from '@mui/icons-material/Logout';
 import Divider from '@mui/material/Divider';
-import { Navigate } from 'react-router-dom';
+import { useNavigate} from 'react-router-dom';
 
 
 
@@ -33,9 +33,11 @@ function Header() {
     const DrawerTheme = useTheme();
     const isMatch =  useMediaQuery(DrawerTheme.breakpoints.down("md"));
     const { user, logoutUser } = useContext(AuthContext);
+    const navigate = useNavigate();
 
-    const adminPanel = (event) => {
-        <Navigate to="../adminPanel" />
+    
+    const adminPanel = () => {
+        navigate('../adminPanel');
     }
 
     const handleClose = () => {

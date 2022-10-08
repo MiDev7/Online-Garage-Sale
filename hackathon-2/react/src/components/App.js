@@ -13,6 +13,7 @@ import { CartProvider } from './context/CartContext';
 import Checkout from './Checkout'
 import Admin from './Admin'
 import AddProducts from './AddProducts';
+import Cart from './Cart';
 import  {ItemProvider } from './context/ItemContext';
 
 const theme = createTheme({
@@ -68,6 +69,7 @@ function App() {
                     <Route path='/checkout' element={<Checkout/>}/>
                     <Route path='/adminPanel' element={<Admin/>}/>
                     <Route path='/adminPanel/Products' element={<AddProducts/>}/>
+                    <Route path='/cart' element={<Cart/>}/>
                   </Routes>
             </CartProvider>
           </ItemProvider>
