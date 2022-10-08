@@ -60,29 +60,29 @@ class Products(models.Model):
 
     
 
-    def save(self, *args, **kwargs):
-        directory = os.getcwd()
+    # def save(self, *args, **kwargs):
+    #     directory = os.getcwd()
 
-        print(directory)
-        super(Products, self).save(*args, **kwargs)
-        print()
-        print(self.image.url)
-        dir = os.getcwd() + '/main/static/image'
-        imgs = [dir + self.image.url]  # batch of images
+    #     print(directory)
+    #     super(Products, self).save(*args, **kwargs)
+    #     print()
+    #     print(self.image.url)
+    #     dir = os.getcwd() + '/main/static/image'
+    #     imgs = [dir + self.image.url]  # batch of images
 
-        # Inference
-        try: 
-            results = model(imgs)
-            df = results.pandas().xyxy[0].sort_values(by=['confidence'], ascending=False)
+    #     # Inference
+    #     try: 
+    #         results = model(imgs)
+    #         df = results.pandas().xyxy[0].sort_values(by=['confidence'], ascending=False)
 
         
-            self.name = df[['name','confidence']].loc[0]['name']
+    #         self.name = df[['name','confidence']].loc[0]['name']
 
-        except:
-            pass
-            #self.name = 'undefined'
+    #     except:
+    #         pass
+    #         #self.name = 'undefined'
 
-        super(Products, self).save(*args, **kwargs)
+        # super(Products, self).save(*args, **kwargs)
         
 # class Order(models.Model):
 #     user = models.ForeignKey(users, on_delete=models.SET_NULL,null=True,blank=True)

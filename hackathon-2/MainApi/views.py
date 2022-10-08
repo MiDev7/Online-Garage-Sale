@@ -1,4 +1,6 @@
 from distutils.command.upload import upload
+import json
+from unicodedata import name
 from django.shortcuts import render, get_object_or_404, redirect
 from numpy import product
 from .serializers import *
@@ -156,3 +158,17 @@ def categoriesView(request):
     items = Categories.objects.all()
     serializer = CategorySerializer(items, many=True)
     return Response(serializer.data)
+
+def saveProduct(request):
+    if request.method == 'POST':
+        product = json.load(request)
+        print(product['name'])
+        # price = json.load(request)['price']
+        # quantity = json.load(request)['quantity']
+        # desc = json.load(request)['desc']
+        
+        newProduct= Products(name=product['name'], price=product['price'],qty=product['quantity'], description=product['desc'],image=product['image'])
+
+        newProduct.save()
+
+        return JsonResponse('data received',safe=False)

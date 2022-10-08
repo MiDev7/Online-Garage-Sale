@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {
   FormControl, 
   InputLabel, 
@@ -43,18 +43,7 @@ function getCookie(name) {
 }
 const csrftoken = getCookie('csrftoken');
 
-const names = [
-  "Oliver Hansen",
-  "Van Henry",
-  "April Tucker",
-  "Ralph Hubbard",
-  "Omar Alexander",
-  "Carlos Abbott",
-  "Miriam Wagner",
-  "Bradley Wilkerson",
-  "Virginia Andrews",
-  "Kelly Snyder"
-];
+const names = [];
 
 function getStyles(name, personName, theme) {
   return {
@@ -68,6 +57,10 @@ function getStyles(name, personName, theme) {
 
 function AddProducts() {
   const theme = useTheme();
+  const [category, setCategory] = React.useState([]);
+  const [price, setPrice] = React.useState();
+  const [quantity, setQuantity] = React.useState(0);
+  const [desc, setDesc] = React.useState('');
   const [personName, setPersonName] = React.useState([]);
   const [productName,setProductName] = React.useState()
   const handleChange = (event) => {
@@ -106,7 +99,44 @@ function AddProducts() {
     console.log("value is:", event.target.value);
   };
 
-  
+  const submitForm = () => {
+    let imageUrl = document.getElementById("fileInput").files[0];
+    let formData = new FormData();
+
+    formData.append("image", imageUrl);     
+    fetch('/api/saveProduct/',{
+      method:'POST',
+      headers:{
+        'X-CSRFToken' : csrftoken,
+        'Content-type':'application/json'
+      },
+      body: JSON.stringify({
+        'name': productName,
+        'price': price,
+        'quantity': quantity,
+        'desc': desc,
+        'image': formData
+        // 'category': ,
+        // ''
+      })
+      
+    })
+    .then((response) => response.json())
+    .then((data)=>{
+      console.log(data)
+    })
+  }
+
+  useEffect(()=>{
+    fetch('/api/category/',{
+      method:'GET',
+    })
+    .then((response) => response.json())
+    .then((data)=>{
+      console.log('data received', data)
+      setCategory(data)
+    })
+  },[])
 
   const AddProduct = (
     <div>
@@ -127,12 +157,12 @@ function AddProducts() {
           <TextField label='Product Name'value={productName}  variant='filled' placeholder='Enter product name' fullWidth  onChange={handleChangeName}></TextField>
         </Grid>
         <Grid item xs={12}>
-          <TextField label='Price' type='number' placeholder='Enter price of unity' variant='filled' fullWidth></TextField>
+          <TextField label='Price' type='number' placeholder='Enter price of unity' value={price} onChange={e => setPrice(e.target.value)} variant='filled' fullWidth></TextField>
         </Grid>
         <Grid item xs={12}>
-          <TextField label='Quantity available' placeholder='Enter the quantity available' variant='filled' fullWidth></TextField>
+          <TextField label='Quantity available' placeholder='Enter the quantity available' onChange={e => setQuantity(e.target.value)} value={quantity} variant='filled' fullWidth></TextField>
         </Grid>
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <FormControl fullWidth>
             <InputLabel id="demo-multiple-chip-label">Category</InputLabel>
             <Select
@@ -143,6 +173,7 @@ function AddProducts() {
               onChange={handleChange}
               input={<FilledInput id="select-multiple-chip" label="Chip" />}
               renderValue={(selected) => (
+                
                 <Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
                   {selected.map((value) => (
                     <Chip color='primary' key={value} label={value} />
@@ -151,18 +182,18 @@ function AddProducts() {
               )}
               MenuProps={MenuProps}
             >
-              {names.map((name) => (
+              {category.map((item) => (
                 <MenuItem
-                  key={name}
-                  value={name}
-                  style={getStyles(name, personName, theme)}
+                  key={item.id}
+                  value={item.name}
+                  style={getStyles(item.name, personName, theme)}
                 >
-                  {name}
+                  {item.name}
                 </MenuItem>
               ))}
             </Select>
           </FormControl>
-        </Grid>
+        </Grid> */}
         <Grid item xs={12}>
           <TextField
             id="filled-textarea"
@@ -170,11 +201,14 @@ function AddProducts() {
             placeholder="Enter the description"
             multiline
             variant="filled"
+            value={desc}
+            onChange={e => setDesc(e.target.value)}
             fullWidth
+
           />
         </Grid>
         <Grid item xs={12}>
-          < Button type='submit' variant='contained'  fullWidth>Submit</Button>
+          < Button type='submit' onClick={submitForm} variant='contained'  fullWidth>Submit</Button>
         </Grid>
       </Grid>
     </div>
